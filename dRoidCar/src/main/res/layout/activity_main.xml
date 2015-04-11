@@ -12,21 +12,21 @@
                android:layout_height="100dp"
                android:src="@drawable/ic_car_pink_48dp"
                android:layout_centerInParent="true"
-               android:id="@+id/view"/>
+               android:id="@+id/car"/>
 
     <ImageView
             android:src="@drawable/ic_keyboard_arrow_up_pink_48dp"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/up_arrow"
-            android:layout_above="@+id/view"
+            android:layout_above="@+id/car"
             android:layout_centerHorizontal="true"/>
     <ImageView
             android:src="@drawable/ic_keyboard_arrow_down_pink_48dp"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/down_arrow"
-            android:layout_below="@+id/view"
+            android:layout_below="@+id/car"
             android:layout_centerHorizontal="true"/>
     <ImageView
             android:src="@drawable/ic_keyboard_arrow_right_pink_48dp"
@@ -34,14 +34,14 @@
             android:layout_height="100dp"
             android:id="@+id/right_arrow"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/view"
+            android:layout_toRightOf="@id/car"
             android:layout_centerHorizontal="true"/>
     <ImageView
             android:src="@drawable/ic_keyboard_arrow_left_pink_48dp"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/left_arrow"
-            android:layout_toLeftOf="@id/view"
+            android:layout_toLeftOf="@id/car"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"/>
 </RelativeLayout>

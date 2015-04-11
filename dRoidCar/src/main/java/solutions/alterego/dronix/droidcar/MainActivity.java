@@ -1,5 +1,8 @@
 package solutions.alterego.dronix.droidcar;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -18,8 +21,8 @@ import solutions.alterego.dronix.droidcar.api.models.Directions;
 
 public class MainActivity extends ActionBarActivity {
 
-    @InjectView(R.id.view)
-    ImageView mView;
+    @InjectView(R.id.car)
+    ImageView mCar;
 
     @InjectView(R.id.up_arrow)
     ImageView mUpArrow;
@@ -39,26 +42,31 @@ public class MainActivity extends ActionBarActivity {
     @OnClick(R.id.up_arrow)
     void goToUp() {
         mCommandManager.goTo(Directions.UP);
+        YoYo.with(Techniques.BounceInUp).duration(500).playOn(mUpArrow);
     }
 
     @OnClick(R.id.down_arrow)
     void goToDown() {
         mCommandManager.goTo(Directions.DOWN);
+        YoYo.with(Techniques.BounceInDown).duration(500).playOn(mDownArrow);
     }
 
     @OnClick(R.id.right_arrow)
     void goToRight() {
         mCommandManager.goTo(Directions.RIGHT);
+        YoYo.with(Techniques.BounceInLeft).duration(500).playOn(mRightArrow);
     }
 
     @OnClick(R.id.left_arrow)
     void goToLeft() {
         mCommandManager.goTo(Directions.LEFT);
+        YoYo.with(Techniques.BounceInRight).duration(500).playOn(mLeftArrow);
     }
 
-    @OnClick(R.id.view)
+    @OnClick(R.id.car)
     void brake() {
         mCommandManager.brake(new Brake(Brake.FAST));
+        YoYo.with(Techniques.Tada).duration(500).playOn(mCar);
     }
 
     @Override
