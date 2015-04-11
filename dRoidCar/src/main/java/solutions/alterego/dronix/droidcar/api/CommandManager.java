@@ -13,7 +13,7 @@ public class CommandManager {
 
     public CommandManager() {
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://192.168.1.1")
+                .setEndpoint("http://192.168.43.98:8888")
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
