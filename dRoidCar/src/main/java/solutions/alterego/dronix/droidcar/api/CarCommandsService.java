@@ -18,4 +18,7 @@ public interface CarCommandsService {
 
     @POST("/api/brake")
     Observable<Speed> brake(@Body Brake brake);
+
+    @GET("/api/speed")
+    Observable<Speed> getSpeed();
 }

@@ -32,4 +32,8 @@ public class CommandManager {
     public Observable<Speed> brake(Brake brake) {
         return mCarCommandsService.brake(brake);
     }
+
+    public Observable<Speed> getSpeed() {
+        return mCarCommandsService.getSpeed();
+    }
 }
