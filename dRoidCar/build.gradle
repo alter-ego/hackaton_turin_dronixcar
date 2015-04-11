@@ -47,4 +47,7 @@ dependencies {
 
     provided 'javax.annotation:jsr250-api:1.0'
     provided "org.projectlombok:lombok:1.16.2"
+
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+
 }

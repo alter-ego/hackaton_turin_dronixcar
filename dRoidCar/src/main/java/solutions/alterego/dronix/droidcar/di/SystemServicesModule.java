@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import solutions.alterego.dronix.droidcar.api.CommandManager;
 
 @Module
 public class SystemServicesModule {
@@ -37,4 +38,9 @@ public class SystemServicesModule {
         return (ConnectivityManager) application.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
+    @Provides
+    @Singleton
+    CommandManager provideCommandManager() {
+        return new CommandManager();
+    }
 }
