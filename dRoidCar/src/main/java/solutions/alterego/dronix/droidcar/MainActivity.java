@@ -1,17 +1,39 @@
 package solutions.alterego.dronix.droidcar;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    @InjectView(R.id.view)
+    ImageView mView;
+
+    @InjectView(R.id.up_arrow)
+    ImageView mUpArrow;
+
+    @InjectView(R.id.down_arrow)
+    ImageView mDownArrow;
+
+    @InjectView(R.id.right_arrow)
+    ImageView mRightArrow;
+
+    @InjectView(R.id.left_arrow)
+    ImageView mLeftArrow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.component(this).inject(this);
+
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
     }
 
 
