@@ -8,7 +8,7 @@ import solutions.alterego.dronix.droidcar.App;
 import solutions.alterego.dronix.droidcar.MainActivity;
 
 @Singleton
-@dagger.Component(modules = {SystemServicesModule.class})
+@dagger.Component(modules = {ManagersModule.class})
 public interface Component {
 
     void inject(App app);
@@ -20,7 +20,7 @@ public interface Component {
 
         public static Component init(App app) {
             return DaggerComponent.builder()
-                    .systemServicesModule(new SystemServicesModule(app))
+                    .managersModule(new ManagersModule(app))
                     .build();
         }
     }

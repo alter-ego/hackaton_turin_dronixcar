@@ -11,13 +11,14 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import solutions.alterego.dronix.droidcar.api.CommandManager;
+import solutions.alterego.dronix.droidcar.api.MotionManager;
 
 @Module
-public class SystemServicesModule {
+public class ManagersModule {
 
     private final Application application;
 
-    public SystemServicesModule(Application application) {
+    public ManagersModule(Application application) {
         this.application = application;
     }
 
@@ -42,5 +43,11 @@ public class SystemServicesModule {
     @Singleton
     CommandManager provideCommandManager() {
         return new CommandManager();
+    }
+
+    @Provides
+    @Singleton
+    MotionManager provideMotionManager() {
+        return new MotionManager();
     }
 }

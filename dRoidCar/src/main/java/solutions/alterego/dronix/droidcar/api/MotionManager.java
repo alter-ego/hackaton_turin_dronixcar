@@ -1,49 +1,40 @@
-package solutions.alterego.dronix.droidcar;
+package solutions.alterego.dronix.droidcar.api;
 
-import android.graphics.Bitmap;
-import android.util.Log;
-
-import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+public class MotionManager {
 
-public class GetImage {
+    private AtomicBoolean isStopped;
 
-    public GetImage() {
+    public MotionManager() {
         isStopped = new AtomicBoolean(false);
     }
 
-    /*final Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);*/
-    private AtomicBoolean isStopped;
+    public Bitmap decodeBitmap(byte[] image) {
+        return BitmapFactory.decodeByteArray(image, 0, image.length);
+    }
 
-    public byte[] getImage() {
+    public byte[] getImage(URL url) {
         byte[] imageBytes = null;
-
-        URL url;
-        try {
-            url = new URL("http://dronix.dyndns.org:8081");
-        } catch (MalformedURLException e) {
-            Log.i("Error streamTask", e.getMessage());
-            return null;
-
-        }
 
         HttpHost host = new HttpHost(url.getHost(), url.getPort(), url.getProtocol());
         HttpGet httpget = new HttpGet("/");
         HttpClient httpClient = new DefaultHttpClient();
-
 
         try {
             HttpResponse response = httpClient.execute(host, httpget);
@@ -62,7 +53,9 @@ public class GetImage {
                     // while((is.read())!='\n');//da valutare se il readLine ha gia tolto i \r\n
                     while (!isStopped.get()) {
                         int len = 0, c;
-                        while (((is.read()) != '\r' && (is.read()) != '\n') && (!isStopped.get())) ;
+                        while (((is.read()) != '\r' && (is.read()) != '\n') && (!isStopped.get())) {
+                            ;
+                        }
                         int bs;
                         while (((bs = is.read()) != -1) && (!isStopped.get())) {
                             if (bs == 'C' && is.read() == 'o' && is.read() == 'n' && is.read() == 't' &&
@@ -79,9 +72,15 @@ public class GetImage {
                             }
                         }
                         imageBytes = new byte[len];
-                        while ((is.read() != '\n') && (!isStopped.get())) ;
-                        while ((is.read() != '\r') && (!isStopped.get())) ;
-                        while ((is.read() != '\n') && (!isStopped.get())) ;
+                        while ((is.read() != '\n') && (!isStopped.get())) {
+                            ;
+                        }
+                        while ((is.read() != '\r') && (!isStopped.get())) {
+                            ;
+                        }
+                        while ((is.read() != '\n') && (!isStopped.get())) {
+                            ;
+                        }
                         if (is.read(imageBytes, 0, len) != -1) {
                             Log.i("ASYNCK", "asy" + imageBytes.length);
                         }
@@ -92,5 +91,6 @@ public class GetImage {
         } catch (IOException e) {
             Log.i("Error streamTask", e.getMessage());
         }
-    return imageBytes;}
+        return imageBytes;
+    }
 }
