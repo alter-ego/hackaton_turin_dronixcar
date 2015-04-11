@@ -10,4 +10,8 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <style name="BTNFloat">
+        <item name="android:background">@drawable/float_btn_drawable</item>
+    </style>
+
 </resources>
