@@ -49,10 +49,12 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:text="@string/action_rec_voice_btn"
-        android:id="@+id/button"
+        android:id="@+id/voice_recognition_btn"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
         style="@style/BTNFloat" />
 
 

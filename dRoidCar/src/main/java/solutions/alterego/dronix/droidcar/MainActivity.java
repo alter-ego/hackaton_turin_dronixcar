@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import javax.inject.Inject;
@@ -35,6 +36,9 @@ public class MainActivity extends ActionBarActivity {
 
     @InjectView(R.id.left_arrow)
     ImageView mLeftArrow;
+
+    @InjectView(R.id.voice_recognition_btn)
+    Button mVoiceRecBtn;
 
     @Inject
     CommandManager mCommandManager;
@@ -67,6 +71,11 @@ public class MainActivity extends ActionBarActivity {
     void brake() {
         mCommandManager.brake(new Brake(Brake.FAST));
         YoYo.with(Techniques.Tada).duration(500).playOn(mCar);
+    }
+
+    @OnClick(R.id.voice_recognition_btn)
+    void startVoiceRecognition() {
+
     }
 
     @Override
