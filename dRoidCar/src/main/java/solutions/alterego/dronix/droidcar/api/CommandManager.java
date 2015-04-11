@@ -1,8 +1,7 @@
 package solutions.alterego.dronix.droidcar.api;
 
-import android.database.Observable;
-
 import retrofit.RestAdapter;
+import rx.Observable;
 import solutions.alterego.dronix.droidcar.api.models.Brake;
 import solutions.alterego.dronix.droidcar.api.models.Direction;
 import solutions.alterego.dronix.droidcar.api.models.Directions;
