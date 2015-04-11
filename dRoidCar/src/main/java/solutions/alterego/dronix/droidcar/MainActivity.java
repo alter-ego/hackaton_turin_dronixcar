@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -22,9 +23,12 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import solutions.alterego.dronix.droidcar.api.CommandManager;
-import solutions.alterego.dronix.droidcar.api.models.Brake;
 import solutions.alterego.dronix.droidcar.api.models.Directions;
+import solutions.alterego.dronix.droidcar.api.models.Speed;
 import solutions.alterego.dronix.droidcar.utils.VoicePatternUtils;
 
 
@@ -79,7 +83,26 @@ public class MainActivity extends ActionBarActivity {
 
     @OnClick(R.id.car)
     void brake() {
-        mCommandManager.brake(new Brake(Brake.FAST));
+        //mCommandManager.brake(new Brake(Brake.FAST));
+        mCommandManager.getSpeed()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Speed>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("SPEED", e.toString());
+                    }
+
+                    @Override
+                    public void onNext(Speed speed) {
+                        Log.d("SPEED", speed.toString());
+                    }
+                });
         YoYo.with(Techniques.Tada).duration(500).playOn(mCar);
     }
 
