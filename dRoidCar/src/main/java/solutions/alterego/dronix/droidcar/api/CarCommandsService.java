@@ -16,6 +16,6 @@ public interface CarCommandsService {
     @GET("/api/direction")
     Observable<Direction> getCurrentDirection();
 
-    @POST("/api/break")
+    @POST("/api/brake")
     Observable<Speed> brake(@Body Brake brake);
 }
