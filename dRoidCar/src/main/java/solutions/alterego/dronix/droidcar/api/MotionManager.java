@@ -14,7 +14,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.Socket;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
@@ -43,15 +46,74 @@ public class MotionManager {
         });
     }
 
-    public Observable<byte[]> getBytes(URL url){
 
-
-        return Observable.create(new Observable.OnSubscribe<byte[]>() {
+    public Observable<Bitmap> getBytes2(URL url) {
+        return Observable.create(new Observable.OnSubscribe<Bitmap>() {
             @Override
-            public void call(Subscriber<? super byte[]> subscriber) {
+            public void call(Subscriber<? super Bitmap> subscriber) {
+                try {
+                    byte[] imageBytes = null;
+                    Socket socket = new Socket(url.getHost(), 8081);
+                    InputStream is = socket.getInputStream();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(is));
+                    String tmp = "";
+
+                    do {
+                        tmp = in.readLine();
+                    }
+                    while (!tmp.startsWith("Content-Type:") && (!isStopped.get()));
+                    int idx = tmp.indexOf("boundary");
+                    String boundary = tmp.substring(idx + 9);
+                    // while((is.read())!='\n');//da valutare se il readLine ha gia tolto i \r\n
+                    while (!isStopped.get()) {
+                        int len = 0, c;
+                        while (((is.read()) != '\r' && (is.read()) != '\n') && (!isStopped.get())) ;
+                        int bs;
+                        while (((bs = is.read()) != -1) && (!isStopped.get())) {
+                            if (bs == 'C' && is.read() == 'o' && is.read() == 'n' && is.read() == 't' &&
+                                    is.read() == 'e' && is.read() == 'n' && is.read() == 't' && is.read() == '-' && is.read() == 'L' &&
+                                    is.read() == 'e' && is.read() == 'n' && is.read() == 'g' && is.read() == 't' && is.read() == 'h') {
+
+                                while (((c = is.read()) != '\r') && (!isStopped.get())) {
+
+                                    if ((c >= '0') && (c <= '9')) {
+                                        len = (len * 10) + c - 48;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                        imageBytes = new byte[len];
+
+                        while ((is.read() != '\n') && (!isStopped.get())) ;
+                        while ((is.read() != '\r') && (!isStopped.get())) ;
+                        while ((is.read() != '\n') && (!isStopped.get())) ;
+                        if (is.read(imageBytes, 0, len) != -1) {
+                            Bitmap bitmap = decodeBitmap(imageBytes);
+                            subscriber.onNext(bitmap);
+                            Thread.sleep(100);
+                        }
+                    }
+                    socket.close();
+                } catch (IOException e) {
+                    subscriber.onError(e);
+                } catch (InterruptedException e) {
+                   subscriber.onError(e);
+                }
+                subscriber.onCompleted();
+
+            }
+        });
+    }
+
+
+    public Observable<Bitmap> getBytes(URL url){
+        return Observable.create(new Observable.OnSubscribe<Bitmap>() {
+            @Override
+            public void call(Subscriber<? super Bitmap> subscriber) {
                 byte[] imageBytes = null;
 
-                HttpHost host = new HttpHost(url.getHost(), url.getPort(), url.getProtocol());
+                HttpHost host = new HttpHost(url.getHost(), 8081, url.getProtocol());
                 HttpGet httpget = new HttpGet("/");
                 HttpClient httpClient = new DefaultHttpClient();
 
@@ -96,8 +158,10 @@ public class MotionManager {
                                 while ((is.read() != '\n') && (!isStopped.get()));
                                 if (is.read(imageBytes, 0, len) != -1) {
                                     Log.i("ASYNCK", "asy" + imageBytes.length);
-                                    subscriber.onNext(imageBytes);
+
+                                    subscriber.onNext(decodeBitmap(imageBytes));
                                 }
+
                             }
                         }
                     }
@@ -106,12 +170,9 @@ public class MotionManager {
                     subscriber.onError(e);
                 }
 
-            subscriber.onCompleted();
+                subscriber.onCompleted();
 
             }
-
-
-
         });
 
     }
