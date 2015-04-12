@@ -11,7 +11,7 @@ import solutions.alterego.dronix.droidcar.api.models.Speed;
 public interface CarCommandsService {
 
     @POST("/api/direction")
-    Observable<Direction> goTo(@Body Direction direction);
+    Observable<Speed> goTo(@Body Direction direction);
 
     @GET("/api/direction")
     Observable<Direction> getCurrentDirection();

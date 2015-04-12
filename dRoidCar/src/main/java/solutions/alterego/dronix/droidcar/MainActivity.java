@@ -26,10 +26,8 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import solutions.alterego.dronix.droidcar.api.CommandManager;
 import solutions.alterego.dronix.droidcar.api.MotionManager;
@@ -154,11 +152,12 @@ public class MainActivity extends ActionBarActivity {
         }
         URL url = null;
         try {
-            url = new URL(CommandManager.URL);
+            url = new URL(getString(R.string.api_endpoint));
         } catch (MalformedURLException e) {
 
         }
-        if (url != null)
+        
+        if (url != null) {
             mMotionManager.getBytes(url)
                     .flatMap(mMotionManager::getBitmap)
                     .filter(bitmap -> bitmap != null).subscribeOn(Schedulers.io())
@@ -181,7 +180,7 @@ public class MainActivity extends ActionBarActivity {
                         }
                     }
             );
-
+        }
     }
 
     @Override
