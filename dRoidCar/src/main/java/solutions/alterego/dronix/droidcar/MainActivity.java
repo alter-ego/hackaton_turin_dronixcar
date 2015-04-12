@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -34,7 +33,6 @@ import solutions.alterego.dronix.droidcar.api.CommandManager;
 import solutions.alterego.dronix.droidcar.api.MotionManager;
 import solutions.alterego.dronix.droidcar.api.models.Brake;
 import solutions.alterego.dronix.droidcar.api.models.Directions;
-import solutions.alterego.dronix.droidcar.api.models.Speed;
 import solutions.alterego.dronix.droidcar.utils.VoicePatternUtils;
 
 
@@ -95,26 +93,7 @@ public class MainActivity extends ActionBarActivity {
 
     @OnClick(R.id.car)
     void brake() {
-        //mCommandManager.brake(new Brake(Brake.FAST));
-        mCommandManager.getSpeed()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Speed>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d("SPEED", e.toString());
-                    }
-
-                    @Override
-                    public void onNext(Speed speed) {
-                        Log.d("SPEED", speed.toString());
-                    }
-                });
+        mCommandManager.brake(new Brake(Brake.FAST));
         YoYo.with(Techniques.Tada).duration(500).playOn(mCar);
     }
 
