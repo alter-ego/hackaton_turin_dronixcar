@@ -1,18 +1,16 @@
 package solutions.alterego.dronix.droidcar.api.models;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 @Data
-@Accessors(prefix = "m")
 public class Direction {
 
-    String mDirection;
+    String direction;
 
-    int mSpeed;
+    int speed;
 
     public Direction(String direction, int speed) {
-        mDirection = direction;
-        mSpeed = speed;
+        this.direction = direction;
+        this.speed = speed;
     }
 }

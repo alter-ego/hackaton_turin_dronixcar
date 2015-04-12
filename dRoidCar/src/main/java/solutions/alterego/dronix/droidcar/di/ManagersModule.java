@@ -41,8 +41,8 @@ public class ManagersModule {
 
     @Provides
     @Singleton
-    CommandManager provideCommandManager(Context context) {
-        return new CommandManager(context);
+    CommandManager provideCommandManager() {
+        return new CommandManager();
     }
 
     @Provides

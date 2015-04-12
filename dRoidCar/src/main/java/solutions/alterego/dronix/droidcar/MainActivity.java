@@ -5,14 +5,16 @@ import com.daimajia.androidanimations.library.YoYo;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -34,7 +36,6 @@ import solutions.alterego.dronix.droidcar.api.CommandManager;
 import solutions.alterego.dronix.droidcar.api.MotionManager;
 import solutions.alterego.dronix.droidcar.api.models.Brake;
 import solutions.alterego.dronix.droidcar.api.models.Directions;
-import solutions.alterego.dronix.droidcar.api.models.Speed;
 import solutions.alterego.dronix.droidcar.utils.VoicePatternUtils;
 
 
@@ -58,7 +59,7 @@ public class MainActivity extends ActionBarActivity {
     ImageView mLeftArrow;
 
     @InjectView(R.id.voice_recognition_btn)
-    Button mVoiceRecBtn;
+    ImageButton mVoiceRecBtn;
 
     @Inject
     MotionManager mMotionManager;
@@ -71,50 +72,31 @@ public class MainActivity extends ActionBarActivity {
 
     @OnClick(R.id.up_arrow)
     void goToUp() {
-        mCommandManager.goTo(Directions.UP);
+        mCommandManager.goTo(Directions.UP).subscribeOn(Schedulers.io()).subscribe();
         YoYo.with(Techniques.BounceInUp).duration(500).playOn(mUpArrow);
     }
 
     @OnClick(R.id.down_arrow)
     void goToDown() {
-        mCommandManager.goTo(Directions.DOWN);
+        mCommandManager.goTo(Directions.DOWN).subscribeOn(Schedulers.io()).subscribe();
         YoYo.with(Techniques.BounceInDown).duration(500).playOn(mDownArrow);
     }
 
     @OnClick(R.id.right_arrow)
     void goToRight() {
-        mCommandManager.goTo(Directions.RIGHT);
+        mCommandManager.goTo(Directions.RIGHT).subscribeOn(Schedulers.io()).subscribe();
         YoYo.with(Techniques.BounceInLeft).duration(500).playOn(mRightArrow);
     }
 
     @OnClick(R.id.left_arrow)
     void goToLeft() {
-        mCommandManager.goTo(Directions.LEFT);
+        mCommandManager.goTo(Directions.LEFT).subscribeOn(Schedulers.io()).subscribe();
         YoYo.with(Techniques.BounceInRight).duration(500).playOn(mLeftArrow);
     }
 
     @OnClick(R.id.car)
     void brake() {
-        //mCommandManager.brake(new Brake(Brake.FAST));
-        mCommandManager.getSpeed()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Speed>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d("SPEED", e.toString());
-                    }
-
-                    @Override
-                    public void onNext(Speed speed) {
-                        Log.d("SPEED", speed.toString());
-                    }
-                });
+        mCommandManager.brake(new Brake(Brake.FAST)).subscribeOn(Schedulers.io()).subscribe();
         YoYo.with(Techniques.Tada).duration(500).playOn(mCar);
     }
 
@@ -159,8 +141,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
         if (url != null) {
-            mMotionManager.getBytes(url)
-                    .flatMap(mMotionManager::getBitmap)
+            mMotionManager.getBytes2(url)
                     .filter(bitmap -> bitmap != null).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread()).subscribe(
                     new Observer<Bitmap>() {
@@ -176,8 +157,15 @@ public class MainActivity extends ActionBarActivity {
 
                         @Override
                         public void onNext(Bitmap bitmap) {
+                            Drawable drawable = mMotionImage.getDrawable();
+                            if (drawable instanceof BitmapDrawable) {
+                                BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+                                Bitmap bitmap2 = bitmapDrawable.getBitmap();
+                                bitmap2.recycle();
+                            }
                             mMotionImage.setImageBitmap(bitmap);
                             mMotionImage.invalidate();
+
                         }
                     }
             );
