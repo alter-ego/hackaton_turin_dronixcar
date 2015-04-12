@@ -26,7 +26,6 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import solutions.alterego.dronix.droidcar.api.CommandManager;
@@ -69,31 +68,31 @@ public class MainActivity extends ActionBarActivity {
 
     @OnClick(R.id.up_arrow)
     void goToUp() {
-        mCommandManager.goTo(Directions.UP);
+        mCommandManager.goTo(Directions.UP).subscribeOn(Schedulers.io()).subscribe();
         YoYo.with(Techniques.BounceInUp).duration(500).playOn(mUpArrow);
     }
 
     @OnClick(R.id.down_arrow)
     void goToDown() {
-        mCommandManager.goTo(Directions.DOWN);
+        mCommandManager.goTo(Directions.DOWN).subscribeOn(Schedulers.io()).subscribe();
         YoYo.with(Techniques.BounceInDown).duration(500).playOn(mDownArrow);
     }
 
     @OnClick(R.id.right_arrow)
     void goToRight() {
-        mCommandManager.goTo(Directions.RIGHT);
+        mCommandManager.goTo(Directions.RIGHT).subscribeOn(Schedulers.io()).subscribe();
         YoYo.with(Techniques.BounceInLeft).duration(500).playOn(mRightArrow);
     }
 
     @OnClick(R.id.left_arrow)
     void goToLeft() {
-        mCommandManager.goTo(Directions.LEFT);
+        mCommandManager.goTo(Directions.LEFT).subscribeOn(Schedulers.io()).subscribe();
         YoYo.with(Techniques.BounceInRight).duration(500).playOn(mLeftArrow);
     }
 
     @OnClick(R.id.car)
     void brake() {
-        mCommandManager.brake(new Brake(Brake.FAST));
+        mCommandManager.brake(new Brake(Brake.FAST)).subscribeOn(Schedulers.io()).subscribe();
         YoYo.with(Techniques.Tada).duration(500).playOn(mCar);
     }
 
