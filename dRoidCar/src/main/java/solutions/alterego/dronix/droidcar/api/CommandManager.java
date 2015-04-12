@@ -1,12 +1,11 @@
 package solutions.alterego.dronix.droidcar.api;
 
-import android.content.Context;
-
-import javax.inject.Inject;
+import com.squareup.okhttp.OkHttpClient;
 
 import retrofit.RestAdapter;
+import retrofit.android.AndroidLog;
+import retrofit.client.OkClient;
 import rx.Observable;
-import solutions.alterego.dronix.droidcar.R;
 import solutions.alterego.dronix.droidcar.api.models.Brake;
 import solutions.alterego.dronix.droidcar.api.models.Direction;
 import solutions.alterego.dronix.droidcar.api.models.Directions;
@@ -16,18 +15,19 @@ public class CommandManager {
 
     private final CarCommandsService mCarCommandsService;
 
-    @Inject
-    public CommandManager(Context context ) {
+    public CommandManager() {
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(context.getString(R.string.api_endpoint))
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setEndpoint("http://192.168.43.98:8888")
+                .setLogLevel(RestAdapter.LogLevel.BASIC)
+                .setLog(new AndroidLog("DROIDCAR"))
+                .setClient(new OkClient(new OkHttpClient()))
                 .build();
 
         mCarCommandsService = restAdapter.create(CarCommandsService.class);
     }
 
     public Observable<Speed> goTo(Directions direction) {
-        Direction d = new Direction(direction.name(), 0);
+        Direction d = new Direction(direction.name().toLowerCase(), 0);
         return mCarCommandsService.goTo(d);
     }
 
