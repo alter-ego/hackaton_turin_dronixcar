@@ -156,7 +156,7 @@ public class MainActivity extends ActionBarActivity {
         } catch (MalformedURLException e) {
 
         }
-        
+
         if (url != null) {
             mMotionManager.getBytes(url)
                     .flatMap(mMotionManager::getBitmap)
@@ -211,6 +211,7 @@ public class MainActivity extends ActionBarActivity {
         if (requestCode == REQUEST_OK && resultCode == RESULT_OK) {
             ArrayList<String> thingsYouSaid = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             Directions directions = VoicePatternUtils.RecognitionDirection(thingsYouSaid);
+
             if (directions != null) {
                 Toast.makeText(getApplicationContext(), directions.name(), Toast.LENGTH_LONG).show();
                 mCommandManager.goTo(directions);
@@ -221,7 +222,6 @@ public class MainActivity extends ActionBarActivity {
                     mCommandManager.brake(brake);
                 }
             }
-
         }
     }
 }
