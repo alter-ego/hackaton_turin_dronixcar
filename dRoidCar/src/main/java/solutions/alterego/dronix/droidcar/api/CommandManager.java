@@ -8,12 +8,12 @@ import solutions.alterego.dronix.droidcar.api.models.Directions;
 import solutions.alterego.dronix.droidcar.api.models.Speed;
 
 public class CommandManager {
-
+    public static final String URL ="http://192.168.43.98:8888";
     private final CarCommandsService mCarCommandsService;
 
     public CommandManager() {
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://192.168.43.98:8888")
+                .setEndpoint(URL)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 

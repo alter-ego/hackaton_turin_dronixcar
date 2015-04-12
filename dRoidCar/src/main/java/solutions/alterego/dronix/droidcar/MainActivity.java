@@ -4,6 +4,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.speech.RecognizerIntent;
@@ -15,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -23,10 +26,13 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import solutions.alterego.dronix.droidcar.api.CommandManager;
+import solutions.alterego.dronix.droidcar.api.MotionManager;
 import solutions.alterego.dronix.droidcar.api.models.Brake;
 import solutions.alterego.dronix.droidcar.api.models.Directions;
 import solutions.alterego.dronix.droidcar.api.models.Speed;
@@ -56,7 +62,13 @@ public class MainActivity extends ActionBarActivity {
     Button mVoiceRecBtn;
 
     @Inject
+    MotionManager mMotionManager;
+
+    @Inject
     CommandManager mCommandManager;
+
+    @InjectView(R.id.motion)
+    ImageView mMotionImage;
 
     @OnClick(R.id.up_arrow)
     void goToUp() {
@@ -140,6 +152,36 @@ public class MainActivity extends ActionBarActivity {
                     .penaltyLog()
                     .build());
         }
+        URL url = null;
+        try {
+            url = new URL(CommandManager.URL);
+        } catch (MalformedURLException e) {
+
+        }
+        if (url != null)
+            mMotionManager.getBytes(url)
+                    .flatMap(mMotionManager::getBitmap)
+                    .filter(bitmap -> bitmap != null).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                    new Observer<Bitmap>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(Bitmap bitmap) {
+                            mMotionImage.setImageBitmap(bitmap);
+                            mMotionImage.invalidate();
+                        }
+                    }
+            );
+
     }
 
     @Override
@@ -173,13 +215,13 @@ public class MainActivity extends ActionBarActivity {
             if (directions != null) {
                 Toast.makeText(getApplicationContext(), directions.name(), Toast.LENGTH_LONG).show();
                 mCommandManager.goTo(directions);
+            } else {
+                Brake brake = VoicePatternUtils.RecognitionCommand(thingsYouSaid);
+                if (brake != null) {
+                    Toast.makeText(getApplicationContext(), "stop", Toast.LENGTH_LONG).show();
+                    mCommandManager.brake(brake);
+                }
             }
-            Brake brake = VoicePatternUtils.RecognitionCommand(thingsYouSaid);
-            if(brake != null){
-                Toast.makeText(getApplicationContext(), "stop", Toast.LENGTH_LONG).show();
-                mCommandManager.brake(brake);
-            }
-
 
         }
     }

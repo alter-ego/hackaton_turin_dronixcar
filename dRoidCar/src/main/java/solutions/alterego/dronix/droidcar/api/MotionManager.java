@@ -17,6 +17,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import rx.Observable;
+import rx.Subscriber;
+
 public class MotionManager {
 
     private AtomicBoolean isStopped;
@@ -29,68 +32,90 @@ public class MotionManager {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 
-    public byte[] getImage(URL url) {
-        byte[] imageBytes = null;
+    public Observable<Bitmap> getBitmap(byte[] imageBytes){
+        return Observable.create(new Observable.OnSubscribe<Bitmap>() {
+            @Override
+            public void call(Subscriber<? super Bitmap> subscriber) {
+                Bitmap bitmap = decodeBitmap(imageBytes);
+                subscriber.onNext(bitmap);
+                subscriber.onCompleted();
+            }
+        });
+    }
 
-        HttpHost host = new HttpHost(url.getHost(), url.getPort(), url.getProtocol());
-        HttpGet httpget = new HttpGet("/");
-        HttpClient httpClient = new DefaultHttpClient();
+    public Observable<byte[]> getBytes(URL url){
 
-        try {
-            HttpResponse response = httpClient.execute(host, httpget);
-            int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode == 200) {
-                InputStream is = response.getEntity().getContent();
-                if (is != null) {
-                    BufferedReader in = new BufferedReader(new InputStreamReader(is));
-                    String tmp = "";
 
-                    do {
-                        tmp = in.readLine();
-                    }
-                    while (!tmp.toLowerCase().startsWith("content-type:") && (!isStopped.get()));
+        return Observable.create(new Observable.OnSubscribe<byte[]>() {
+            @Override
+            public void call(Subscriber<? super byte[]> subscriber) {
+                byte[] imageBytes = null;
 
-                    // while((is.read())!='\n');//da valutare se il readLine ha gia tolto i \r\n
-                    while (!isStopped.get()) {
-                        int len = 0, c;
-                        while (((is.read()) != '\r' && (is.read()) != '\n') && (!isStopped.get())) {
-                            ;
-                        }
-                        int bs;
-                        while (((bs = is.read()) != -1) && (!isStopped.get())) {
-                            if (bs == 'C' && is.read() == 'o' && is.read() == 'n' && is.read() == 't' &&
-                                    is.read() == 'e' && is.read() == 'n' && is.read() == 't' && is.read() == '-' && is.read() == 'L' &&
-                                    is.read() == 'e' && is.read() == 'n' && is.read() == 'g' && is.read() == 't' && is.read() == 'h') {
+                HttpHost host = new HttpHost(url.getHost(), url.getPort(), url.getProtocol());
+                HttpGet httpget = new HttpGet("/");
+                HttpClient httpClient = new DefaultHttpClient();
 
-                                while (((c = is.read()) != '\r') && (!isStopped.get())) {
+                try {
+                    HttpResponse response = httpClient.execute(host, httpget);
+                    int statusCode = response.getStatusLine().getStatusCode();
+                    if (statusCode == 200) {
+                        InputStream is = response.getEntity().getContent();
+                        if (is != null) {
+                            BufferedReader in = new BufferedReader(new InputStreamReader(is));
+                            String tmp = "";
 
-                                    if ((c >= '0') && (c <= '9')) {
-                                        len = (len * 10) + c - 48;
+                            do {
+                                tmp = in.readLine();
+                            }
+                            while (!tmp.toLowerCase().startsWith("content-type:") && (!isStopped.get()));
+
+                            // while((is.read())!='\n');//da valutare se il readLine ha gia tolto i \r\n
+                            while (!isStopped.get()) {
+                                int len = 0, c;
+                                while (((is.read()) != '\r' && (is.read()) != '\n') && (!isStopped.get())) {
+                                    ;
+                                }
+                                int bs;
+                                while (((bs = is.read()) != -1) && (!isStopped.get())) {
+                                    if (bs == 'C' && is.read() == 'o' && is.read() == 'n' && is.read() == 't' &&
+                                            is.read() == 'e' && is.read() == 'n' && is.read() == 't' && is.read() == '-' && is.read() == 'L' &&
+                                            is.read() == 'e' && is.read() == 'n' && is.read() == 'g' && is.read() == 't' && is.read() == 'h') {
+
+                                        while (((c = is.read()) != '\r') && (!isStopped.get())) {
+
+                                            if ((c >= '0') && (c <= '9')) {
+                                                len = (len * 10) + c - 48;
+                                            }
+                                        }
+                                        break;
                                     }
                                 }
-                                break;
+                                imageBytes = new byte[len];
+                                while ((is.read() != '\n') && (!isStopped.get()));
+                                while ((is.read() != '\r') && (!isStopped.get()));
+                                while ((is.read() != '\n') && (!isStopped.get()));
+                                if (is.read(imageBytes, 0, len) != -1) {
+                                    Log.i("ASYNCK", "asy" + imageBytes.length);
+                                    subscriber.onNext(imageBytes);
+                                }
                             }
                         }
-                        imageBytes = new byte[len];
-                        while ((is.read() != '\n') && (!isStopped.get())) {
-                            ;
-                        }
-                        while ((is.read() != '\r') && (!isStopped.get())) {
-                            ;
-                        }
-                        while ((is.read() != '\n') && (!isStopped.get())) {
-                            ;
-                        }
-                        if (is.read(imageBytes, 0, len) != -1) {
-                            Log.i("ASYNCK", "asy" + imageBytes.length);
-                        }
-
                     }
+                } catch (IOException e) {
+                    Log.i("Error streamTask", e.getMessage());
+                    subscriber.onError(e);
                 }
+
+            subscriber.onCompleted();
+
             }
-        } catch (IOException e) {
-            Log.i("Error streamTask", e.getMessage());
-        }
-        return imageBytes;
+
+
+
+        });
+
+    }
+    public void stop(){
+        isStopped.set(true);
     }
 }
