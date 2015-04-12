@@ -27,6 +27,7 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import solutions.alterego.dronix.droidcar.api.CommandManager;
+import solutions.alterego.dronix.droidcar.api.models.Brake;
 import solutions.alterego.dronix.droidcar.api.models.Directions;
 import solutions.alterego.dronix.droidcar.api.models.Speed;
 import solutions.alterego.dronix.droidcar.utils.VoicePatternUtils;
@@ -110,7 +111,7 @@ public class MainActivity extends ActionBarActivity {
     void startVoiceRecognition() {
         Intent recVoiceIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         recVoiceIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 10);
-        recVoiceIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "invia comando");
+        recVoiceIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "scegli: destra, sinistra, avanti, indietro, stop");
         recVoiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         recVoiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.ITALIAN);
         try {
@@ -173,6 +174,12 @@ public class MainActivity extends ActionBarActivity {
                 Toast.makeText(getApplicationContext(), directions.name(), Toast.LENGTH_LONG).show();
                 mCommandManager.goTo(directions);
             }
+            Brake brake = VoicePatternUtils.RecognitionCommand(thingsYouSaid);
+            if(brake != null){
+                Toast.makeText(getApplicationContext(), "stop", Toast.LENGTH_LONG).show();
+                mCommandManager.brake(brake);
+            }
+
 
         }
     }
