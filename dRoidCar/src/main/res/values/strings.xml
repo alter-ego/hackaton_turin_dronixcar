@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">HackatondRoidCar</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_rec_voice_btn">speak</string>
-    <string name="desc_dialog_voice_recognition">scegli: destra, sinistra, avanti, indietro, stop</string>
+    <string name="desc_dialog_voice_recognition">Scegli un comando: destra, sinistra, avanti, indietro, stop</string>
     <string name="api_endpoint">http://192.168.43.98:8888</string>
 </resources>
