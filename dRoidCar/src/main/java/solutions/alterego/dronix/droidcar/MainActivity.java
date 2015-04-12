@@ -111,7 +111,7 @@ public class MainActivity extends ActionBarActivity {
     void startVoiceRecognition() {
         Intent recVoiceIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         recVoiceIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 10);
-        recVoiceIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "scegli: destra, sinistra, avanti, indietro, stop");
+        recVoiceIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.desc_dialog_voice_recognition));
         recVoiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         recVoiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.ITALIAN);
         try {
