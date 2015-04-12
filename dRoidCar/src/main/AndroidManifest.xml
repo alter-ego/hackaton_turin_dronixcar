@@ -6,6 +6,7 @@
     <uses-permission android:name="ANDROID.PERMISSION.ACCESS_NETWORK_STATE"/>
 
     <application
+        android:hardwareAccelerated="true"
         android:allowBackup="true"
         android:name=".App"
         android:icon="@drawable/ic_car_pink_48dp"

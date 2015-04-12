@@ -5,6 +5,8 @@ import com.daimajia.androidanimations.library.YoYo;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.speech.RecognizerIntent;
@@ -137,8 +139,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
         if (url != null) {
-            mMotionManager.getBytes(url)
-                    .flatMap(mMotionManager::getBitmap)
+            mMotionManager.getBytes2(url)
                     .filter(bitmap -> bitmap != null).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread()).subscribe(
                     new Observer<Bitmap>() {
@@ -154,8 +155,15 @@ public class MainActivity extends ActionBarActivity {
 
                         @Override
                         public void onNext(Bitmap bitmap) {
+                            Drawable drawable = mMotionImage.getDrawable();
+                            if (drawable instanceof BitmapDrawable) {
+                                BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+                                Bitmap bitmap2 = bitmapDrawable.getBitmap();
+                                bitmap2.recycle();
+                            }
                             mMotionImage.setImageBitmap(bitmap);
                             mMotionImage.invalidate();
+
                         }
                     }
             );
