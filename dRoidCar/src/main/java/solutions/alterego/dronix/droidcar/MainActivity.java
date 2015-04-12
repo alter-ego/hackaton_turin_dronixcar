@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -58,7 +59,7 @@ public class MainActivity extends ActionBarActivity {
     ImageView mLeftArrow;
 
     @InjectView(R.id.voice_recognition_btn)
-    Button mVoiceRecBtn;
+    ImageButton mVoiceRecBtn;
 
     @Inject
     MotionManager mMotionManager;
