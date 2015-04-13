@@ -141,7 +141,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
         if (url != null) {
-            mMotionManager.getBytes2(url)
+            mMotionManager.getBytes3(url)
                     .filter(bitmap -> bitmap != null).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread()).subscribe(
                     new Observer<Bitmap>() {
