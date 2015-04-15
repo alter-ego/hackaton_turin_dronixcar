@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
 import rx.Subscriber;
+import solutions.alterego.dronix.droidcar.utils.MjpegInputStream;
 
 public class MotionManager {
 
@@ -174,8 +175,30 @@ public class MotionManager {
 
             }
         });
-
     }
+
+        public Observable<Bitmap> getBytes3(URL url){
+            return Observable.create(new Observable.OnSubscribe<Bitmap>() {
+                @Override
+                public void call(Subscriber<? super Bitmap> subscriber) {
+                    MjpegInputStream mjpegInputStream = MjpegInputStream.read("http://" +url.getHost()+ ":" + 8081);
+                    if (mjpegInputStream == null)
+                        subscriber.onError(new Throwable("mjpegInputStream == null"));
+                    else {
+                        while (!isStopped.get()) {
+                            try {
+                                subscriber.onNext(mjpegInputStream.readMjpegFrame());
+                            } catch (IOException e) {
+                                subscriber.onError(e);
+                            }
+                        }
+                    }
+                    subscriber.onCompleted();
+
+                }
+            });
+        }
+
     public void stop(){
         isStopped.set(true);
     }

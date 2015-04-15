@@ -17,7 +17,7 @@ public class CommandManager {
 
     public CommandManager() {
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://192.168.43.98:8888")
+                .setEndpoint("http://192.168.43.99:8888")
                 .setLogLevel(RestAdapter.LogLevel.BASIC)
                 .setLog(new AndroidLog("DROIDCAR"))
                 .setClient(new OkClient(new OkHttpClient()))
