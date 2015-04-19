@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +27,7 @@ import solutions.alterego.dronix.droidcar.fragment.AboutFragment;
 import solutions.alterego.dronix.droidcar.fragment.ArrowFragment;
 import solutions.alterego.dronix.droidcar.fragment.SettingsFragment;
 import solutions.alterego.dronix.droidcar.interfaces.IFragmentToActivity;
+import solutions.alterego.dronix.droidcar.utils.SharedPreferencesUtils;
 import solutions.alterego.dronix.droidcar.utils.VoicePatternUtils;
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, IFragmentToActivity{
@@ -67,7 +69,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                 R.id.navigation_drawer,
                 mDrawer,
                 mToolbar);
-        mItemSelected = ITEM_SELECTED.SETTINGS;
+
+        if(SharedPreferencesUtils.ReadConfig(PreferenceManager.getDefaultSharedPreferences(this)).ip.equals(""))
+            mItemSelected = ITEM_SELECTED.SETTINGS;
+        else
+            onSaveConfigFinished();
+
+
 
     }
 
