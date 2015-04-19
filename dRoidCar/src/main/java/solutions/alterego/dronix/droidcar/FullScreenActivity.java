@@ -143,7 +143,16 @@ public class FullScreenActivity extends Activity {
         mCommandManager.goTo(Directions.LEFT).subscribeOn(Schedulers.io()).subscribe();
     }
 
-    private static final float THRESHHOLD = 0.5f;
+    void goToReset() {
+        mCommandManager.goTo(Directions.RESET).subscribeOn(Schedulers.io()).subscribe();
+    }
+
+    private static final int THRESHHOLD = 2;
+    private static final float RANGE = 3f;
+    private static final float RANGE_CENTER = 0.5f;
+    /**reset 0, left 1, right 2*/
+    private int currentPosition;
+    private float mLastX;
     private SensorEventListener linearAccelerationListener = new SensorEventListener() {
 
         @Override
@@ -172,10 +181,20 @@ public class FullScreenActivity extends Activity {
                         x = event.values[1];
                         break;
                 }
-                if (x > THRESHHOLD)
+                if (x > RANGE && currentPosition != 1) {
                     goToLeft();
-                else if (x < -THRESHHOLD)
+                    currentPosition = 1;
+                    mLastX = x;
+                } else if (x < -RANGE && currentPosition != 2) {
                     goToRight();
+                    currentPosition = 2;
+                    mLastX = x;
+                } else if ((x < RANGE_CENTER && x > - RANGE_CENTER) && currentPosition != 0) {
+                    goToReset();
+                    currentPosition = 0;
+                }
+
+
             }
         }
 

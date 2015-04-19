@@ -90,7 +90,7 @@ public class SettingsFragment extends Fragment {
     @OnClick(R.id.save_config_button)
     void saveConfig() {
         Observable.just(SharedPreferencesUtils.WriteConfig(mSharedPreferences, new Server(mServerIp.getText().toString(),
-                mServerPortCamera.getText().toString(), mServerPortCamera.getText().toString()))).
+                mServerPort.getText().toString(), mServerPortCamera.getText().toString()))).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .filter(aVoid -> getActivity() != null)
                 .map(aVoid -> (IFragmentToActivity)getActivity())
