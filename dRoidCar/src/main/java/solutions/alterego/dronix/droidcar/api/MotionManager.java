@@ -6,6 +6,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -20,9 +21,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 import rx.Subscriber;
+import solutions.alterego.dronix.droidcar.App;
+import solutions.alterego.dronix.droidcar.api.models.Server;
 import solutions.alterego.dronix.droidcar.utils.MjpegInputStream;
+import solutions.alterego.dronix.droidcar.utils.SharedPreferencesUtils;
 
 public class MotionManager {
 
@@ -48,13 +54,15 @@ public class MotionManager {
     }
 
 
-    public Observable<Bitmap> getBytes2(URL url) {
+    public Observable<Bitmap> getBytes2(SharedPreferences sharedPreference) {
         return Observable.create(new Observable.OnSubscribe<Bitmap>() {
             @Override
             public void call(Subscriber<? super Bitmap> subscriber) {
                 try {
                     byte[] imageBytes = null;
-                    Socket socket = new Socket(url.getHost(), 8081);
+
+                    Server server = SharedPreferencesUtils.ReadConfig(sharedPreference);
+                    Socket socket = new Socket(server.ip, Integer.parseInt(server.portCamera));
                     InputStream is = socket.getInputStream();
                     BufferedReader in = new BufferedReader(new InputStreamReader(is));
                     String tmp = "";
@@ -177,11 +185,12 @@ public class MotionManager {
         });
     }
 
-        public Observable<Bitmap> getBytes3(URL url){
+        public Observable<Bitmap> getBytes3(SharedPreferences sharedPreference){
             return Observable.create(new Observable.OnSubscribe<Bitmap>() {
                 @Override
                 public void call(Subscriber<? super Bitmap> subscriber) {
-                    MjpegInputStream mjpegInputStream = MjpegInputStream.read("http://" +url.getHost()+ ":" + 8081);
+                    Server server = SharedPreferencesUtils.ReadConfig(sharedPreference);
+                    MjpegInputStream mjpegInputStream = MjpegInputStream.read("http://" + server.ip + ":" + server.portCamera +"");
                     if (mjpegInputStream == null)
                         subscriber.onError(new Throwable("mjpegInputStream == null"));
                     else {

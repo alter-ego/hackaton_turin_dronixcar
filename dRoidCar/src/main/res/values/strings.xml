@@ -3,6 +3,26 @@
 
     <string name="action_settings">Settings</string>
     <string name="action_rec_voice_btn">speak</string>
-    <string name="desc_dialog_voice_recognition">Scegli un comando: destra, sinistra, avanti, indietro, stop</string>
-    <string name="api_endpoint">http://192.168.43.99:8888</string>
+    <string name="desc_dialog_voice_recognition">Choose a command: right, left, forward, back, stop</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_section1">Configuration</string>
+    <string name="title_section2">Car</string>
+    <string name="title_section3">About</string>
+    <string name="car_server_config">Configuration Car</string>
+    <string name="car_server_port">Port</string>
+    <string name="car_server_port_camera">Camera Port</string>
+    <string name="car_server_ip">Ip</string>
+    <string name="action_save_config_button">Save</string>
+    <string name="right">right</string>
+    <string name="left">left</string>
+    <string name="forward">forward</string>
+    <string name="back">back</string>
+    <string name="stop">stop</string>
+
+    <string-array name="abouts">
+        <item>Stefano Viola  (stefanoviola85@gmail.com)</item>
+        <item>Ivan Morgillo (ivan@alterego.solutions)</item>
+        <item>Antonio Gisondi (harlem88.ant@gmail.com)</item>
+    </string-array>
 </resources>

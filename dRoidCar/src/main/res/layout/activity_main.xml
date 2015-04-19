@@ -1,63 +1,34 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <ImageView android:layout_width="match_parent"
-               android:layout_height="220dp"
-               android:src="@drawable/droidcon"
-               android:scaleType="centerCrop"
-               android:id="@+id/motion"
-               android:layout_alignParentTop="true"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ImageView
-            android:src="@drawable/ic_keyboard_arrow_up_pink_48dp"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/up_arrow"
-            android:layout_below="@+id/motion"
-            android:layout_centerHorizontal="true"/>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimaryDark"
+            android:minHeight="?attr/actionBarSize" />
 
-    <ImageView android:layout_width="100dp"
-               android:layout_height="100dp"
-               android:layout_below="@+id/up_arrow"
-               android:layout_centerHorizontal="true"
-               android:src="@drawable/ic_car_pink_48dp"
-               android:id="@+id/car"/>
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 
-    <ImageView
-            android:src="@drawable/ic_keyboard_arrow_down_pink_48dp"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/down_arrow"
-            android:layout_below="@+id/car"
-            android:layout_centerHorizontal="true"/>
-    <ImageView
-            android:src="@drawable/ic_keyboard_arrow_right_pink_48dp"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/right_arrow"
-            android:layout_below="@+id/up_arrow"
-            android:layout_toRightOf="@+id/car"
-            android:layout_toEndOf="@+id/car"/>
-    <ImageView
-            android:src="@drawable/ic_keyboard_arrow_left_pink_48dp"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/left_arrow"
-            android:layout_below="@+id/up_arrow"
-            android:layout_toLeftOf="@id/car"/>
+    <fragment
+        android:id="@+id/navigation_drawer"
+        android:name="solutions.alterego.dronix.droidcar.NavigationDrawerFragment"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        tools:layout="@layout/fragment_navigation_drawer" />
 
-    <ImageButton
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/ic_mic_white_36dp"
-            android:id="@+id/voice_recognition_btn"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            style="@style/BTNFloat"/>
-
-
-</RelativeLayout>
+</android.support.v4.widget.DrawerLayout>

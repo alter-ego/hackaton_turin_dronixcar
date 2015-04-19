@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_margin="@dimen/activity_horizontal_margin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/car_server_config"
+        android:textSize="18dp"
+        android:textColor="@color/primary_text"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/server_ip"
+        android:textColor="@color/primary_text"
+        android:hint="@string/car_server_ip"
+        android:textColorHint="@color/primary_text_disabled_material_light"
+        android:layout_gravity="center_horizontal" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:textColor="@color/primary_text"
+        android:textColorHint="@color/primary_text_disabled_material_light"
+        android:hint="@string/car_server_port"
+        android:id="@+id/server_port"
+        android:layout_gravity="center_horizontal" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:textColor="@color/primary_text"
+        android:textColorHint="@color/primary_text_disabled_material_light"
+        android:hint="@string/car_server_port_camera"
+        android:id="@+id/server_port_camera"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/action_save_config_button"
+        android:enabled="false"
+        android:id="@+id/save_config_button" />
+
+
+</LinearLayout>
