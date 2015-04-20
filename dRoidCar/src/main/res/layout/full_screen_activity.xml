@@ -1,0 +1,37 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/droidcon"
+        android:scaleType="fitXY"
+        android:id="@+id/motion"
+        android:layout_alignParentTop="true"/>
+
+    <ImageView
+        android:src="@drawable/ic_keyboard_arrow_down_pink_48dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/down_arrow"
+        android:layout_gravity="bottom"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom|right">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_car_pink_48dp"
+            android:id="@+id/car" />
+
+        <ImageView
+            android:src="@drawable/ic_keyboard_arrow_up_pink_48dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/up_arrow" />
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HackatondRoidCar</string>
+
+    <string name="action_settings">Impostazioni</string>
+    <string name="action_rec_voice_btn">parla</string>
+    <string name="desc_dialog_voice_recognition">Scegli un comando: destra, sinistra, avanti, indietro, stop</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_section1">Configurazione</string>
+    <string name="title_section2">Macchina</string>
+    <string name="title_section3">Info</string>
+    <string name="car_server_config">Configurazione Macchina</string>
+    <string name="car_server_port">Porta server</string>
+    <string name="car_server_port_camera">Porta camera</string>
+    <string name="car_server_ip">Ip</string>
+    <string name="action_save_config_button">Salva</string>
+    <string name="right">destra</string>
+    <string name="left">sinistra</string>
+    <string name="forward">avanti</string>
+    <string name="back">indietro</string>
+    <string name="stop">stop</string>
+</resources>

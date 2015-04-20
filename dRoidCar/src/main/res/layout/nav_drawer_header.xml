@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="178dp"
+    android:orientation="vertical"
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/nav_drawer_header_image"
+        android:src="@drawable/droidcar_cartoon"
+        android:background="#000000"
+        android:scaleType="fitXY"/>
+
+    <TextView
+        android:id="@+id/nav_drawer_header_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        />
+<View
+    android:layout_gravity="bottom"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/accent"/>
+</FrameLayout>

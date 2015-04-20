@@ -42,7 +42,7 @@ public class ManagersModule {
     @Provides
     @Singleton
     CommandManager provideCommandManager() {
-        return new CommandManager();
+        return new CommandManager(providePreferenceManager());
     }
 
     @Provides
