@@ -38,13 +38,15 @@ commander.brake = "./commander.sh /dev/ttyACM0 0 6000"
 commander.forward = "./commander.sh /dev/ttyACM0 0 6500"
 commander.back = "./commander.sh /dev/ttyACM0 0 5500"
 commander.left = "./commander.sh /dev/ttyACM0 1 10000"
-commander.right = "./commander.sh /dev/ttyACM0 1 6000"
+commander.right = "./commander.sh /dev/ttyACM0 1 1000"
 commander.reset = "./commander.sh /dev/ttyACM0 1 8350"
 
 
 local SpeedHandler = class("SpeedHandler", turbo.web.RequestHandler)
 local BrakeHandler = class("BrakeHandler", turbo.web.RequestHandler)
 local DirectionHandler = class("DirectionHandler", turbo.web.RequestHandler)
+local WebHandler = class("WebHandler", turbo.web.RequestHandler)
+
 function SpeedHandler:get()
     self:write({speed=commander.speed})
 end
@@ -103,8 +105,15 @@ function DirectionHandler:post()
     elseif data.direction == "right" then
         print("Received RIGHT command...")
         io.popen(commander.right)
+    elseif data.direction == "reset" then
+        print("Received RESET command...")
+        io.popen(commander.reset)	
     end
     self:write({speed=commander.speed})
+end
+
+function WebHandler:get()
+    self:write("WEB INTERFACE")
 end
 
 -- Create an Application object and bind our HelloWorldHandler to the route '/hello'.
@@ -114,6 +123,11 @@ local app = turbo.web.Application:new({
     {"/api/brake", BrakeHandler}
 })
 
+-- Create an Application object and bind our WEB to the route '/web'.
+local appWeb = turbo.web.Application:new({
+    {"/web", WebHandler}
+})
 -- Set the server to listen on port 8888 and start the ioloop.
 app:listen(8888)
+appWeb:listen(8899)
 turbo.ioloop.instance():start()
