@@ -11,7 +11,7 @@
 --          "direction":"up"
 --          "speed":1
 --      }
---      possible direction: up|down|left|right
+--      possible direction: up|down|left|right|reset
 --      possible speed: 1-5
 --
 -- http://IPADDRESS:8888/api/speed
